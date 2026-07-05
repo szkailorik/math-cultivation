@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="灵数仙途">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<meta name="description" content="灵数仙途——面向小学生的沉浸式修仙数学训练游戏：九九乘法、大九九、速算、单位换算、小数、分数">
+<meta property="og:title" content="灵数仙途 · 数学修仙">
+<meta property="og:description" content="以数道真诀斩妖除魔，一路修炼登临大乘！">
+<meta name="theme-color" content="#0b1024">
+<title>灵数仙途 · 数学修仙</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚔️</text></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- 启动页 -->
+  <section id="screen-boot" class="screen active">
+    <div class="boot-bg"></div>
+    <div class="boot-inner">
+      <div class="boot-title-wrap">
+        <h1 class="boot-title">灵数仙途</h1>
+        <p class="boot-sub">数 道 即 仙 道</p>
+      </div>
+      <div id="boot-hero" class="boot-hero"></div>
+      <button id="btn-start" class="btn btn-primary btn-xl">开启仙途</button>
+      <p class="boot-hint">九九为基 · 分数为脉 · 度量为骨</p>
+    </div>
+  </section>
+
+  <!-- 宗门主页 -->
+  <section id="screen-home" class="screen">
+    <div class="home-bg" id="home-bg"></div>
+    <header class="home-top">
+      <div class="realm-badge" id="home-realm-badge"></div>
+      <div class="home-res">
+        <span class="res-item" id="home-stones">💎 0</span>
+        <span class="res-item" id="home-streak">🔥 0</span>
+      </div>
+      <button class="icon-btn" id="btn-settings">⚙️</button>
+    </header>
+    <div class="home-center">
+      <div id="home-hero" class="home-hero"></div>
+      <div class="cultivation-panel">
+        <div class="cult-realm" id="cult-realm-name">炼气一层</div>
+        <div class="cult-bar"><div class="cult-bar-fill" id="cult-bar-fill"></div></div>
+        <div class="cult-xp" id="cult-xp-text"></div>
+      </div>
+    </div>
+    <nav class="home-nav">
+      <button class="nav-card nav-adventure" id="btn-adventure">
+        <span class="nav-ico">🗺️</span><span class="nav-name">六大秘境</span><span class="nav-desc">闯关修炼</span>
+      </button>
+      <button class="nav-card nav-daily" id="btn-daily">
+        <span class="nav-ico">🌅</span><span class="nav-name">每日晨课</span><span class="nav-desc">限时十题</span>
+      </button>
+      <button class="nav-card nav-demon" id="btn-demon">
+        <span class="nav-ico">👿</span><span class="nav-name">心魔殿</span><span class="nav-desc">错题斩魔</span>
+      </button>
+      <button class="nav-card nav-beasts" id="btn-beasts">
+        <span class="nav-ico">🐉</span><span class="nav-name">灵兽图鉴</span><span class="nav-desc">收服妖灵</span>
+      </button>
+    </nav>
+  </section>
+
+  <!-- 秘境地图 -->
+  <section id="screen-map" class="screen">
+    <header class="sub-top">
+      <button class="icon-btn btn-back" data-back="home">←</button>
+      <h2>六大秘境</h2><span></span>
+    </header>
+    <div class="map-list" id="map-list"></div>
+  </section>
+
+  <!-- 章节选择 -->
+  <section id="screen-chapters" class="screen">
+    <div class="chapter-bg" id="chapter-bg"></div>
+    <header class="sub-top">
+      <button class="icon-btn btn-back" data-back="map">←</button>
+      <h2 id="chapters-title">秘境</h2><span></span>
+    </header>
+    <div class="chapter-path" id="chapter-path"></div>
+  </section>
+
+  <!-- 战斗 -->
+  <section id="screen-battle" class="screen">
+    <div class="battle-bg" id="battle-bg"></div>
+    <canvas id="fx-canvas"></canvas>
+    <div class="battle-stage" id="battle-stage">
+      <header class="battle-top">
+        <button class="icon-btn" id="btn-flee">✕</button>
+        <div class="battle-progress" id="battle-progress"></div>
+        <div class="combo-badge" id="combo-badge"></div>
+      </header>
+      <div class="battle-field">
+        <div class="enemy-zone">
+          <div class="enemy-wrap" id="enemy-wrap">
+            <div class="enemy-svg" id="enemy-svg"></div>
+            <div class="enemy-name" id="enemy-name"></div>
+            <div class="enemy-hp"><div class="enemy-hp-fill" id="enemy-hp-fill"></div></div>
+          </div>
+          <div class="enemy-speech" id="enemy-speech"></div>
+        </div>
+        <div class="hero-zone">
+          <div class="hero-wrap" id="hero-wrap">
+            <div class="hero-svg" id="battle-hero"></div>
+          </div>
+          <div class="hero-shield" id="hero-shield"></div>
+        </div>
+      </div>
+      <div class="qa-panel" id="qa-panel">
+        <div class="spell-timer"><div class="spell-timer-fill" id="spell-timer-fill"></div></div>
+        <div class="question-text" id="question-text"></div>
+        <div class="answer-zone" id="answer-zone"></div>
+      </div>
+    </div>
+    <div class="feedback-layer" id="feedback-layer"></div>
+  </section>
+
+  <!-- 结算 -->
+  <section id="screen-result" class="screen">
+    <div class="result-card" id="result-card"></div>
+  </section>
+
+  <!-- 突破演出 -->
+  <section id="screen-breakthrough" class="screen">
+    <div class="bt-stage" id="bt-stage"></div>
+  </section>
+
+  <!-- 灵兽图鉴 -->
+  <section id="screen-beasts" class="screen">
+    <header class="sub-top">
+      <button class="icon-btn btn-back" data-back="home">←</button>
+      <h2>灵兽图鉴</h2><span id="beasts-count"></span>
+    </header>
+    <div class="beasts-grid" id="beasts-grid"></div>
+  </section>
+
+  <!-- 心魔殿 -->
+  <section id="screen-demon" class="screen">
+    <header class="sub-top">
+      <button class="icon-btn btn-back" data-back="home">←</button>
+      <h2>心魔殿</h2><span></span>
+    </header>
+    <div class="demon-body" id="demon-body"></div>
+  </section>
+
+  <!-- 设置 -->
+  <section id="screen-settings" class="screen">
+    <header class="sub-top">
+      <button class="icon-btn btn-back" data-back="home">←</button>
+      <h2>设 置</h2><span></span>
+    </header>
+    <div class="settings-body" id="settings-body"></div>
+  </section>
+
+  <!-- 通用弹层 -->
+  <div id="modal-layer" class="modal-layer hidden"></div>
+  <div id="toast" class="toast hidden"></div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/questions.js"></script>
+<script src="js/art.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/battle.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

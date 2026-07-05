@@ -1,0 +1,17 @@
+{
+  "name": "灵数仙途 · 数学修仙",
+  "short_name": "灵数仙途",
+  "description": "面向小学生的沉浸式修仙数学训练游戏",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0b1024",
+  "theme_color": "#0b1024",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230b1024'/><text x='50' y='68' font-size='52' text-anchor='middle'>⚔️</text></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

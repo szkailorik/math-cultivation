@@ -70,3 +70,14 @@ js/main.js        # 启动与路由
 ## 七、发布
 
 GitHub: szkailorik/math-cultivation（公开）。可绑定 Cloudflare Pages / math.kailorik.com。
+
+## 八、双修共战（v1.1 双人协作联机）
+
+**目标**：两个孩子两台设备共同打一只妖兽（协作，非对战）。
+
+- **联网方案**（2026-07 调研结论）：Trystero 0.25.2（Nostr 多中继信令 + WebRTC DataChannel），无自建服务器、无单点；备选 PeerJS 官方云（口碑有抖动）。同 WiFi 下 P2P 数据走本地网络；iPad Safari DataChannel 成熟，纯数据通道无权限弹窗。
+- **配对**：主机"开坛"生成 4 位灵咒（房号），客机输入加入。appId + password 隔离房间。
+- **架构**：对称模拟——伤害/护盾事件双向广播，双方各自应用全部事件，状态收敛一致；无需主机权威仲裁（低频消息 + 求和语义）。妖兽阵容由主机在 start 消息里下发。
+- **协作机制**：各自独立题目流（各自的 Adaptive 会话照常记录学习数据）；共享妖兽血量（加厚：小妖 6-7，妖王 12）；共享队伍护盾 6 点；答错看讲解卡不阻塞伙伴，8 秒自动继续；伙伴掉线转单人继续。
+- **奖励**：胜利双方各得修为（+20% 双修加成）与灵石；不掉灵兽（保留单人价值）；结算显示"你的剑气"（个人输出）。
+- **工程注意**：Trystero 0.25 API 为 `makeAction(name,{onMessage}) → {send}`、`room.onPeerJoin = cb`（赋值式回调）；战斗中申请 Wake Lock 防 iPad 锁屏断联；vendor 文件建议每半年更新一次以获得新鲜 relay 列表。

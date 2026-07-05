@@ -1,10 +1,11 @@
 /* 灵数仙途 Service Worker：缓存优先 + 后台更新 */
-const CACHE = 'lingshu-v1';
+const CACHE = 'lingshu-v2';
 const ASSETS = [
   './', './index.html', './manifest.json',
   './css/style.css',
   './js/data.js', './js/questions.js', './js/art.js',
-  './js/engine.js', './js/battle.js', './js/ui.js', './js/main.js',
+  './js/engine.js', './js/battle.js', './js/coop.js', './js/ui.js', './js/main.js',
+  './js/net.js', './vendor/trystero.mjs',
 ];
 
 self.addEventListener('install', e => {

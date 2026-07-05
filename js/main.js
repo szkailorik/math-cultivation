@@ -24,6 +24,12 @@
   });
   $('#btn-demon').addEventListener('click', () => { Audio2.SFX.tap(); UI.showScreen('demon'); });
   $('#btn-beasts').addEventListener('click', () => { Audio2.SFX.tap(); UI.showScreen('beasts'); });
+  $('#btn-coop').addEventListener('click', () => {
+    if (!window.Net) { showToast('联机模块加载中，稍等片刻…'); return; }
+    Audio2.SFX.tap();
+    Coop.open();
+  });
+  $('#btn-coop-back').addEventListener('click', () => { Audio2.SFX.tap(); Coop.leaveLobby(); UI.showScreen('home'); });
   $('#btn-settings').addEventListener('click', () => { Audio2.SFX.tap(); UI.showScreen('settings'); });
 
   // 返回按钮
@@ -40,12 +46,12 @@
           <button class="btn btn-danger" id="flee-yes">撤退</button>
         </div>
       </div>`);
-    $('#flee-yes').addEventListener('click', () => { UI.closeModal(); Battle.flee(); });
+    $('#flee-yes').addEventListener('click', () => { UI.closeModal(); Coop.active() ? Coop.flee() : Battle.flee(); });
     $('#flee-no').addEventListener('click', UI.closeModal);
   });
 
   // 键盘
-  window.addEventListener('keydown', e => Battle.onKey(e));
+  window.addEventListener('keydown', e => { Coop.active() ? Coop.onKey(e) : Battle.onKey(e); });
 
   // 防误缩放（iPad）
   document.addEventListener('gesturestart', e => e.preventDefault());

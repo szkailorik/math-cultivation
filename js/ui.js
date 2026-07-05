@@ -115,16 +115,18 @@ const UI = (() => {
     if (r.victory) {
       card.innerHTML = `
         <div class="result-inner win">
-          <div class="result-title">${r.mode === 'daily' ? '晨课圆满' : r.mode === 'demon' ? '心魔已斩' : '秘境肃清'}</div>
+          <div class="result-title">${r.mode === 'daily' ? '晨课圆满' : r.mode === 'demon' ? '心魔已斩' : r.mode === 'coop' ? '双剑合璧' : '秘境肃清'}</div>
           <div class="result-stars">${[1, 2, 3].map(i =>
             `<span class="rstar ${i <= r.stars ? 'on' : ''}" style="animation-delay:${i * 0.25}s">★</span>`).join('')}</div>
           <div class="result-stats">
             <div class="rs-item"><span class="rs-v">${Math.round(r.acc * 100)}%</span><span class="rs-k">正确率</span></div>
             <div class="rs-item"><span class="rs-v">${r.maxCombo}</span><span class="rs-k">最高连击</span></div>
-            <div class="rs-item"><span class="rs-v">${r.dur}s</span><span class="rs-k">用时</span></div>
+            ${r.mode === 'coop'
+              ? `<div class="rs-item"><span class="rs-v">${r.coopDmg}</span><span class="rs-k">你的剑气</span></div>`
+              : `<div class="rs-item"><span class="rs-v">${r.dur}s</span><span class="rs-k">用时</span></div>`}
           </div>
           <div class="result-gains">
-            <span class="gain">⚡ 修为 +${r.xp}</span>
+            <span class="gain">⚡ 修为 +${r.xp}${r.mode === 'coop' ? '<small class="coop-bonus">双修加成</small>' : ''}</span>
             <span class="gain">💎 灵石 +${r.stones}</span>
           </div>
           ${r.beastDrop ? `

@@ -66,6 +66,9 @@
       <button class="nav-card nav-beasts" id="btn-beasts">
         <span class="nav-ico">🐉</span><span class="nav-name">灵兽图鉴</span><span class="nav-desc">收服妖灵</span>
       </button>
+      <button class="nav-card nav-coop" id="btn-coop">
+        <span class="nav-ico">🤝</span><span class="nav-name">双修共战</span><span class="nav-desc">两人同斩一妖</span>
+      </button>
     </nav>
   </section>
 
@@ -151,6 +154,15 @@
     <div class="demon-body" id="demon-body"></div>
   </section>
 
+  <!-- 双修共战 -->
+  <section id="screen-coop" class="screen">
+    <header class="sub-top">
+      <button class="icon-btn btn-back" id="btn-coop-back">←</button>
+      <h2>双修共战</h2><span></span>
+    </header>
+    <div class="coop-body" id="coop-body"></div>
+  </section>
+
   <!-- 设置 -->
   <section id="screen-settings" class="screen">
     <header class="sub-top">
@@ -170,7 +182,9 @@
 <script src="js/art.js"></script>
 <script src="js/engine.js"></script>
 <script src="js/battle.js"></script>
+<script src="js/coop.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/main.js"></script>
+<script type="module" src="js/net.js?v=3"></script>
 </body>
 </html>

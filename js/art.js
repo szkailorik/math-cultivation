@@ -17,110 +17,167 @@ const Art = (() => {
 <svg class="hero-fig ${size}" viewBox="0 0 220 300" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="hRobe_${u}" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#eef4ff"/><stop offset="0.55" stop-color="#cfe0f5"/><stop offset="1" stop-color="#9db8dd"/>
+      <stop offset="0" stop-color="#f6f9ff"/><stop offset="0.5" stop-color="#dde9f8"/><stop offset="1" stop-color="#a9c2e2"/>
+    </linearGradient>
+    <linearGradient id="hRobeShade_${u}" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#8fa8cc"/><stop offset="1" stop-color="#c4d6ee"/>
     </linearGradient>
     <linearGradient id="hRobeIn_${u}" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#5a7fc0"/><stop offset="1" stop-color="#3a5a95"/>
+      <stop offset="0" stop-color="#5a7fc0"/><stop offset="1" stop-color="#2e4a80"/>
     </linearGradient>
     <linearGradient id="hHair_${u}" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#3d3a52"/><stop offset="1" stop-color="#211f30"/>
+      <stop offset="0" stop-color="#4a4668"/><stop offset="0.6" stop-color="#2e2b45"/><stop offset="1" stop-color="#1d1b2e"/>
+    </linearGradient>
+    <linearGradient id="hHairL_${u}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6a659a"/><stop offset="1" stop-color="#3a3658"/>
     </linearGradient>
     <linearGradient id="hSash_${u}" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#e8b84a"/><stop offset="1" stop-color="#d09a30"/>
+      <stop offset="0" stop-color="#f0c65e"/><stop offset="0.5" stop-color="#e0a838"/><stop offset="1" stop-color="#c08a28"/>
     </linearGradient>
-    <linearGradient id="hBlade_${u}" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#eaf6ff"/><stop offset="0.5" stop-color="#bcd8f0"/><stop offset="1" stop-color="#8fb8dd"/>
+    <linearGradient id="hBlade_${u}" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#eaf6ff"/><stop offset="0.5" stop-color="#9fd0f5"/><stop offset="1" stop-color="#6aa8dd"/>
     </linearGradient>
+    <linearGradient id="hRibbon_${u}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9ec4f0"/><stop offset="1" stop-color="#5f8ad0"/>
+    </linearGradient>
+    <radialGradient id="hIris_${u}" cx="0.5" cy="0.4" r="0.6">
+      <stop offset="0" stop-color="#7fa8e0"/><stop offset="0.55" stop-color="#3d5f9e"/><stop offset="1" stop-color="#1c2c52"/>
+    </radialGradient>
     <radialGradient id="hAura_${u}" cx="0.5" cy="0.5" r="0.5">
       <stop offset="0" stop-color="${aura === 'none' ? 'transparent' : aura}"/><stop offset="1" stop-color="transparent"/>
     </radialGradient>
     <filter id="hGlow_${u}" x="-40%" y="-40%" width="180%" height="180%">
-      <feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      <feGaussianBlur stdDeviation="3.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
   </defs>
 
   <ellipse class="h-aura" cx="110" cy="160" rx="105" ry="130" fill="url(#hAura_${u})"/>
-  <ellipse cx="110" cy="282" rx="58" ry="10" fill="#00000033"/>
-
-  <!-- 飞剑（背后） -->
-  <g class="h-sword">
-    <rect x="163" y="60" width="9" height="150" rx="4.5" fill="url(#hBlade_${u})" stroke="#7a9cc0" stroke-width="1.5" filter="url(#hGlow_${u})"/>
-    <path d="M167.5 46 L175 62 L160 62 Z" fill="url(#hBlade_${u})" stroke="#7a9cc0" stroke-width="1.5"/>
-    <rect x="156" y="208" width="23" height="8" rx="4" fill="url(#hSash_${u})"/>
-    <rect x="163.5" y="216" width="8" height="20" rx="4" fill="#8a5a2a"/>
-    <circle cx="167.5" cy="240" r="4" fill="#e8b84a"/>
+  <ellipse cx="110" cy="286" rx="60" ry="9" fill="#00000033"/>
+  <!-- 足下灵气涡 -->
+  <g class="h-wisp" opacity="0.55">
+    <path d="M52 278 Q80 262 112 272 Q90 258 62 266 Q50 270 52 278 Z" fill="#9ec4f0"/>
+    <path d="M168 280 Q140 266 112 274 Q136 260 160 268 Q170 272 168 280 Z" fill="#9ec4f0"/>
   </g>
+
+  <!-- 仙剑（背后，悬浮） -->
+  <g class="h-sword">
+    <rect x="164" y="46" width="10" height="158" rx="5" fill="url(#hBlade_${u})" stroke="#5a88b8" stroke-width="1.5" filter="url(#hGlow_${u})"/>
+    <path d="M169 30 L177 50 L161 50 Z" fill="url(#hBlade_${u})" stroke="#5a88b8" stroke-width="1.5"/>
+    <path d="M169 62 L172 68 L169 74 L166 68 Z M169 92 L172 98 L169 104 L166 98 Z M169 122 L172 128 L169 134 L166 128 Z" fill="#eaf6ff" opacity="0.9"/>
+    <path d="M154 204 Q169 198 184 204 Q180 212 169 212 Q158 212 154 204 Z" fill="url(#hSash_${u})" stroke="#a87820" stroke-width="1.5"/>
+    <rect x="164.5" y="212" width="9" height="22" rx="4.5" fill="#7a4a94"/>
+    <path d="M169 234 L169 246 M165 236 L163 248 M173 236 L175 248" stroke="#d04848" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="169" cy="235" r="4.5" fill="#f0c65e" stroke="#a87820" stroke-width="1.5"/>
+  </g>
+
+  <!-- 后飘带 -->
+  <g class="h-ribbon-l"><path d="M84 158 C 48 176, 30 218, 42 260 C 45 269, 55 266, 54 256 C 46 222, 60 190, 90 170 Z" fill="url(#hRibbon_${u})" opacity="0.85"/></g>
+  <g class="h-ribbon-r"><path d="M136 158 C 172 176, 190 218, 178 260 C 175 269, 165 266, 166 256 C 174 222, 160 190, 130 170 Z" fill="url(#hRibbon_${u})" opacity="0.85"/></g>
 
   <!-- 后发 -->
   <g class="h-hairback">
-    <path d="M60 96 Q50 150 58 196 Q66 210 74 196 Q70 150 74 110 Z" fill="url(#hHair_${u})"/>
-    <path d="M160 96 Q170 150 162 196 Q154 210 146 196 Q150 150 146 110 Z" fill="url(#hHair_${u})"/>
+    <path d="M76 78 Q66 150 80 214 Q86 222 92 212 Q84 160 90 106 L130 106 Q136 160 128 212 Q134 222 140 214 Q154 150 144 78 Q128 60 110 60 Q92 60 76 78 Z" fill="url(#hHair_${u})"/>
+    <path d="M84 100 Q80 160 88 202" stroke="url(#hHairL_${u})" stroke-width="3" fill="none" opacity="0.5" stroke-linecap="round"/>
+    <path d="M136 100 Q140 160 132 202" stroke="url(#hHairL_${u})" stroke-width="3" fill="none" opacity="0.5" stroke-linecap="round"/>
   </g>
 
   <!-- 身体（呼吸层） -->
   <g class="h-body">
-    <!-- 袍 -->
-    <path d="M74 168 Q68 200 60 262 Q60 274 78 276 L142 276 Q160 274 160 262 Q152 200 146 168 Q128 150 110 150 Q92 150 74 168 Z" fill="url(#hRobe_${u})" stroke="#8aa8cc" stroke-width="2"/>
-    <!-- 内襟 -->
-    <path d="M110 152 L96 176 L110 236 L124 176 Z" fill="url(#hRobeIn_${u})"/>
-    <path d="M110 152 L98 174 L110 180 L122 174 Z" fill="#fff" opacity="0.9"/>
-    <!-- 袖子 -->
-    <g class="h-sleeve-l"><path d="M78 168 Q52 184 44 216 Q42 228 54 228 Q74 224 84 204 Q88 184 84 170 Z" fill="url(#hRobe_${u})" stroke="#8aa8cc" stroke-width="2"/></g>
-    <g class="h-sleeve-r"><path d="M142 168 Q168 184 176 216 Q178 228 166 228 Q146 224 136 204 Q132 184 136 170 Z" fill="url(#hRobe_${u})" stroke="#8aa8cc" stroke-width="2"/></g>
-    <!-- 腰带 -->
-    <path d="M84 206 Q110 214 136 206 L136 218 Q110 226 84 218 Z" fill="url(#hSash_${u})" stroke="#b8862a" stroke-width="1.5"/>
-    <circle cx="110" cy="212" r="5.5" fill="#fff" stroke="#b8862a" stroke-width="1.5"/>
-    <!-- 玉佩 -->
-    <path d="M110 218 L110 232" stroke="#b8862a" stroke-width="2"/>
-    <circle cx="110" cy="238" r="6" fill="#8fe8c0" stroke="#5aa880" stroke-width="1.5"/>
+    <!-- 外袍 -->
+    <path d="M84 162 Q74 204 62 258 Q58 278 86 282 L134 282 Q162 278 158 258 Q146 204 136 162 Q124 150 110 150 Q96 150 84 162 Z" fill="url(#hRobe_${u})" stroke="#7d9cc4" stroke-width="2"/>
+    <!-- 袍身阴影 -->
+    <path d="M84 162 Q74 204 62 258 Q60 272 74 278 Q70 230 88 176 Z" fill="url(#hRobeShade_${u})" opacity="0.45"/>
+    <!-- 下摆内衬 -->
+    <path d="M70 268 Q110 280 150 268 Q148 278 134 282 L86 282 Q72 278 70 268 Z" fill="#5a7fc0" opacity="0.5"/>
+    <!-- 交领 -->
+    <path d="M110 150 L88 184 L110 206 L132 184 Z" fill="url(#hRobeIn_${u})"/>
+    <path d="M110 150 L88 184 L96 190 L110 158 Z" fill="#fff"/>
+    <path d="M110 150 L132 184 L124 190 L110 158 Z" fill="#eef3fa"/>
+    <path d="M110 158 L96 190 L110 206 L124 190 Z" fill="url(#hRobeIn_${u})"/>
+    <path d="M110 150 L89 183 M110 150 L131 183" stroke="#e0a838" stroke-width="2.5" fill="none"/>
+    <!-- 云纹 -->
+    <path d="M76 246 Q84 240 92 246 Q86 250 80 248 M128 246 Q136 240 144 246 Q138 250 132 248" stroke="#8fb0d8" stroke-width="2" fill="none" opacity="0.7"/>
+    <!-- 袖 -->
+    <g class="h-sleeve-l">
+      <path d="M88 164 Q54 180 40 218 Q32 240 56 242 Q82 240 92 210 Q98 184 92 168 Z" fill="url(#hRobe_${u})" stroke="#7d9cc4" stroke-width="2"/>
+      <path d="M42 226 Q50 238 62 240 Q50 242 44 236 Z" fill="#5a7fc0" opacity="0.6"/>
+      <path d="M40 218 Q52 232 68 234" stroke="#5a7fc0" stroke-width="3" fill="none" opacity="0.7"/>
+      <ellipse cx="52" cy="230" rx="7" ry="5.5" fill="#ffe3cc"/>
+    </g>
+    <g class="h-sleeve-r">
+      <path d="M132 164 Q166 180 180 218 Q188 240 164 242 Q138 240 128 210 Q122 184 128 168 Z" fill="url(#hRobe_${u})" stroke="#7d9cc4" stroke-width="2"/>
+      <path d="M178 226 Q170 238 158 240 Q170 242 176 236 Z" fill="#5a7fc0" opacity="0.6"/>
+      <path d="M180 218 Q168 232 152 234" stroke="#5a7fc0" stroke-width="3" fill="none" opacity="0.7"/>
+      <ellipse cx="168" cy="230" rx="7" ry="5.5" fill="#ffe3cc"/>
+    </g>
+    <!-- 腰带与玉佩 -->
+    <path d="M86 208 Q110 216 134 208 L134 222 Q110 230 86 222 Z" fill="url(#hSash_${u})" stroke="#a87820" stroke-width="1.5"/>
+    <path d="M86 212 Q110 220 134 212" stroke="#fff8e0" stroke-width="1.5" fill="none" opacity="0.6"/>
+    <circle cx="110" cy="215" r="6" fill="#fff" stroke="#a87820" stroke-width="1.8"/>
+    <circle cx="110" cy="215" r="2.5" fill="#e0a838"/>
+    <path d="M104 224 L102 244 M116 224 L118 244" stroke="#e0a838" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="102" cy="250" r="5.5" fill="#8fe8c0" stroke="#4a9870" stroke-width="1.8"/>
+    <path d="M118 244 L118 254 M115 246 L113 256 M121 246 L123 256" stroke="#d04848" stroke-width="2" stroke-linecap="round"/>
   </g>
 
-  <!-- 头（含微摆动画层） -->
+  <!-- 头 -->
   <g class="h-head">
-    <!-- 脖子 -->
-    <rect x="102" y="138" width="16" height="18" rx="7" fill="#ffe3cc"/>
+    <rect x="102" y="136" width="16" height="20" rx="7" fill="#ffe3cc"/>
+    <path d="M102 140 Q110 146 118 140 L118 148 L102 148 Z" fill="#f0c8a8" opacity="0.6"/>
     <!-- 脸 -->
-    <path d="M66 84 Q64 138 92 148 Q110 154 128 148 Q156 138 154 84 Q152 44 110 42 Q68 44 66 84 Z" fill="#ffe9d6"/>
-    <path d="M66 84 Q64 138 92 148 Q110 154 128 148 L128 150 Q110 156 90 150 Q62 138 66 84 Z" fill="#f0c8a8" opacity="0.5"/>
+    <path d="M72 78 Q68 126 94 140 Q110 148 126 140 Q152 126 148 78 Q144 36 110 34 Q76 36 72 78 Z" fill="#ffedd9"/>
+    <path d="M94 140 Q110 148 126 140 Q120 146 110 146 Q100 146 94 140 Z" fill="#f0c8a8" opacity="0.6"/>
     <!-- 腮红 -->
-    <ellipse cx="82" cy="116" rx="9" ry="5" fill="#ffb0a0" opacity="0.55"/>
-    <ellipse cx="138" cy="116" rx="9" ry="5" fill="#ffb0a0" opacity="0.55"/>
+    <ellipse cx="83" cy="114" rx="8.5" ry="4.5" fill="#ffb8a5" opacity="0.6"/>
+    <ellipse cx="137" cy="114" rx="8.5" ry="4.5" fill="#ffb8a5" opacity="0.6"/>
     <!-- 眉 -->
-    <path class="h-brow" d="M76 88 Q86 82 96 87" stroke="#3d3a52" stroke-width="3" fill="none" stroke-linecap="round"/>
-    <path class="h-brow" d="M124 87 Q134 82 144 88" stroke="#3d3a52" stroke-width="3" fill="none" stroke-linecap="round"/>
-    <!-- 眼（眨眼层） -->
+    <path class="h-brow" d="M78 82 Q88 76 98 80" stroke="#3a3658" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path class="h-brow" d="M122 80 Q132 76 142 82" stroke="#3a3658" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- 眼 -->
     <g class="h-eyes">
       <g class="h-eye">
-        <ellipse cx="87" cy="102" rx="11" ry="13" fill="#fff"/>
-        <ellipse cx="87" cy="103" rx="8.5" ry="11" fill="#4a6a9a"/>
-        <ellipse cx="87" cy="104" rx="5" ry="7" fill="#1d2a45"/>
-        <circle cx="90" cy="98" r="3.4" fill="#fff"/>
-        <circle cx="84" cy="108" r="1.6" fill="#ffffffaa"/>
-        <path d="M75 94 Q87 86 99 94" stroke="#2a2740" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <path d="M77 101 Q77 90 88 89 Q99 90 99 101 Q99 112 88 113 Q77 112 77 101 Z" fill="#fff"/>
+        <ellipse cx="88" cy="102" rx="8" ry="10" fill="url(#hIris_${u})"/>
+        <ellipse cx="88" cy="103" rx="4.2" ry="5.8" fill="#131b30"/>
+        <circle cx="91.5" cy="97" r="3" fill="#fff"/>
+        <circle cx="85" cy="107" r="1.5" fill="#ffffffcc"/>
+        <ellipse cx="88" cy="94.5" rx="6.5" ry="2.5" fill="#ffffff55"/>
+        <path d="M75 93 Q88 83 101 93" stroke="#23203a" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M100 92 L105 87" stroke="#23203a" stroke-width="3" stroke-linecap="round"/>
+        <path d="M79 112 Q88 115 97 112" stroke="#c8987e" stroke-width="1.5" fill="none" opacity="0.7"/>
       </g>
       <g class="h-eye">
-        <ellipse cx="133" cy="102" rx="11" ry="13" fill="#fff"/>
-        <ellipse cx="133" cy="103" rx="8.5" ry="11" fill="#4a6a9a"/>
-        <ellipse cx="133" cy="104" rx="5" ry="7" fill="#1d2a45"/>
-        <circle cx="136" cy="98" r="3.4" fill="#fff"/>
-        <circle cx="130" cy="108" r="1.6" fill="#ffffffaa"/>
-        <path d="M121 94 Q133 86 145 94" stroke="#2a2740" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <path d="M121 101 Q121 90 132 89 Q143 90 143 101 Q143 112 132 113 Q121 112 121 101 Z" fill="#fff"/>
+        <ellipse cx="132" cy="102" rx="8" ry="10" fill="url(#hIris_${u})"/>
+        <ellipse cx="132" cy="103" rx="4.2" ry="5.8" fill="#131b30"/>
+        <circle cx="135.5" cy="97" r="3" fill="#fff"/>
+        <circle cx="129" cy="107" r="1.5" fill="#ffffffcc"/>
+        <ellipse cx="132" cy="94.5" rx="6.5" ry="2.5" fill="#ffffff55"/>
+        <path d="M119 93 Q132 83 145 93" stroke="#23203a" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M144 92 L149 87" stroke="#23203a" stroke-width="3" stroke-linecap="round"/>
+        <path d="M123 112 Q132 115 141 112" stroke="#c8987e" stroke-width="1.5" fill="none" opacity="0.7"/>
       </g>
     </g>
-    <g class="h-eyelids"><rect x="70" y="86" width="34" height="0.1" rx="2" fill="#ffe9d6"/><rect x="116" y="86" width="34" height="0.1" rx="2" fill="#ffe9d6"/></g>
+    <g class="h-eyelids"><rect x="73" y="85" width="30" height="0.1" rx="3" fill="#ffedd9"/><rect x="117" y="85" width="30" height="0.1" rx="3" fill="#ffedd9"/></g>
     <!-- 鼻嘴 -->
-    <path d="M109 118 Q111 121 109 123" stroke="#d09a80" stroke-width="2" fill="none" stroke-linecap="round"/>
-    <path class="h-mouth" d="M102 132 Q110 138 118 132" stroke="#c06a5a" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M109 116 Q112 120 109 123" stroke="#d8a184" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path class="h-mouth" d="M102 130 Q110 136 118 130" stroke="#c96a58" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M106 135 Q110 137 114 135" stroke="#e8907e" stroke-width="1.5" fill="none" opacity="0.6"/>
+    <!-- 鬓发（垂在脸侧） -->
+    <path class="h-sidelock" d="M70 72 Q62 120 66 172 Q68 184 78 174 Q74 126 80 84 Z" fill="url(#hHair_${u})"/>
+    <path class="h-sidelock s2" d="M150 72 Q158 120 154 172 Q152 184 142 174 Q146 126 140 84 Z" fill="url(#hHair_${u})"/>
     <!-- 前发 -->
     <g class="h-hairfront">
-      <path d="M62 92 Q56 40 96 30 Q110 26 124 30 Q164 40 158 92 Q156 74 148 66 Q152 84 144 78 Q146 60 132 52 Q138 66 128 62 Q126 46 110 44 Q94 46 92 62 Q82 66 88 52 Q74 60 76 78 Q68 84 72 66 Q64 74 62 92 Z" fill="url(#hHair_${u})"/>
-      <path class="h-bang" d="M96 34 Q104 52 98 70 Q92 60 90 48 Z" fill="#4d4a66"/>
-      <path class="h-bang b2" d="M124 34 Q116 52 122 70 Q128 60 130 48 Z" fill="#4d4a66"/>
-      <!-- 发髻与簪 -->
-      <ellipse cx="110" cy="26" rx="16" ry="12" fill="url(#hHair_${u})"/>
-      <path d="M92 26 L74 18" stroke="#e8b84a" stroke-width="3.5" stroke-linecap="round"/>
-      <circle cx="72" cy="17" r="4" fill="#8fe8c0" stroke="#5aa880" stroke-width="1.5"/>
-      <path d="M96 20 Q110 12 124 20" stroke="#e8b84a" stroke-width="3" fill="none"/>
+      <path d="M68 88 Q60 38 96 26 Q110 22 124 26 Q160 38 152 88 Q148 62 138 55 Q141 76 130 69 Q130 48 118 44 Q115 56 110 57 Q105 56 102 44 Q90 48 90 69 Q79 76 82 55 Q72 62 68 88 Z" fill="url(#hHair_${u})"/>
+      <path class="h-bang" d="M96 30 Q106 50 100 72 Q92 62 90 44 Z" fill="url(#hHairL_${u})" opacity="0.85"/>
+      <path class="h-bang b2" d="M124 30 Q114 50 120 72 Q128 62 130 44 Z" fill="url(#hHairL_${u})" opacity="0.85"/>
+      <path d="M82 44 Q110 28 138 44" stroke="#8a84b8" stroke-width="3" fill="none" opacity="0.5" stroke-linecap="round"/>
+      <!-- 发髻与发冠 -->
+      <ellipse cx="110" cy="22" rx="15" ry="11" fill="url(#hHair_${u})"/>
+      <path d="M98 22 Q110 12 122 22 L119 28 Q110 22 101 28 Z" fill="url(#hSash_${u})" stroke="#a87820" stroke-width="1.5"/>
+      <circle cx="110" cy="18" r="3" fill="#8fe8c0" stroke="#4a9870" stroke-width="1.5"/>
+      <path d="M96 24 L76 15" stroke="#e0a838" stroke-width="3.5" stroke-linecap="round"/>
+      <circle cx="74" cy="14" r="4" fill="#8fe8c0" stroke="#4a9870" stroke-width="1.5"/>
     </g>
   </g>
 </svg>`;

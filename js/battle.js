@@ -77,7 +77,7 @@ const Battle = (() => {
       mode: 'demon', zone, chIdx: -1,
       cfg: { qPerMonster: [picked.length], isBoss: true, diffTier: 1 },
       lineup: [demonM],
-      demonQs: picked.map(([fid, w]) => ({ factId: fid, zone: w.zone, text: w.sample, answer: w.answer, tip: w.tip, choices: w.choices, input: w.choices ? 'choice' : 'pad', baseTime: 14, tier: 1 })),
+      demonQs: picked.map(([fid, w]) => ({ factId: fid, zone: w.zone, text: w.sample, answer: w.answer, tip: w.tip, choices: w.choices, allowDot: w.allowDot || false, input: w.choices ? 'choice' : 'pad', baseTime: 14, tier: 1 })),
       mIdx: 0, mHp: 0, mHpMax: 0, qNeed: 0, qDone: 0,
       shield: 4, shieldMax: 4, combo: 0, maxCombo: 0, answered: 0, correct: 0,
       xpGain: 0, stoneGain: 0, session: Adaptive.newSession(), requeue: [],
@@ -161,10 +161,10 @@ const Battle = (() => {
       q = B.requeue.length && Math.random() < 0.4 ? B.requeue.shift() : B.demonQs.shift();
       if (!q) q = B.requeue.shift();
       if (!q) return endBattle(true);
-      q.timeMs = q.baseTime * 1000;
+      q.timeMs = q.baseTime * 1000 + Q.typingComp(q);
     } else if (B.requeue.length && (Math.random() < 0.35 || B.requeue.length > 2)) {
       q = B.requeue.shift();
-      q.timeMs = Math.round(q.baseTime * 1000 * 1.15); // 重现题稍宽
+      q.timeMs = Math.round(q.baseTime * 1000 * 1.15) + Q.typingComp(q); // 重现题稍宽
     } else {
       const zid = B.mode === 'daily' ? (B.lineup[B.mIdx]._zone || B.zone.id) : B.zone.id;
       q = Adaptive.nextQuestion(zid, B.cfg.diffTier, B.session);
@@ -196,22 +196,30 @@ const Battle = (() => {
         `<button class="choice-btn" data-v="${c}">${c}</button>`).join('')}</div>`;
       $$('.choice-btn').forEach(b => b.addEventListener('click', () => { Audio2.SFX.tap(); submit(b.dataset.v, b); }));
     } else {
+      const lastRow = q.allowDot
+        ? `<button class="pad-btn pad-dot" data-k=".">.</button>
+           <button class="pad-btn" data-k="0">0</button>
+           <button class="pad-btn pad-del" data-k="del">⌫</button>
+           <button class="pad-btn pad-ok pad-wide" data-k="ok">出剑</button>`
+        : `<button class="pad-btn pad-del" data-k="del">⌫</button>
+           <button class="pad-btn" data-k="0">0</button>
+           <button class="pad-btn pad-ok" data-k="ok">出剑</button>`;
       zone.innerHTML = `
         <div class="pad-display" id="pad-display">&nbsp;</div>
         <div class="numpad">
           ${[1,2,3,4,5,6,7,8,9].map(n => `<button class="pad-btn" data-k="${n}">${n}</button>`).join('')}
-          <button class="pad-btn pad-del" data-k="del">⌫</button>
-          <button class="pad-btn" data-k="0">0</button>
-          <button class="pad-btn pad-ok" data-k="ok">出剑</button>
+          ${lastRow}
         </div>`;
       let val = '';
+      const maxLen = q.allowDot ? 8 : 6;
       const disp = $('#pad-display');
       $$('.pad-btn').forEach(b => b.addEventListener('click', () => {
         const k = b.dataset.k;
         Audio2.SFX.tap();
         if (k === 'del') val = val.slice(0, -1);
         else if (k === 'ok') { if (val) submit(val); return; }
-        else if (val.length < 6) val += k;
+        else if (k === '.') { if (q.allowDot && !val.includes('.') && val.length < maxLen) val += '.'; }
+        else if (val.length < maxLen) val += k;
         disp.textContent = val || ' ';
         // 自动出剑：答案位数匹配即自动提交（速算爽感）
         if (val && val.length >= String(B.q.answer).length && k !== 'del') {
@@ -230,7 +238,7 @@ const Battle = (() => {
       if (idx >= 0 && idx < btns.length) btns[idx].click();
       return;
     }
-    if (/^[0-9]$/.test(e.key)) $(`.pad-btn[data-k="${e.key}"]`)?.click();
+    if (/^[0-9.]$/.test(e.key)) $(`.pad-btn[data-k="${e.key}"]`)?.click();
     else if (e.key === 'Backspace') $('.pad-btn[data-k="del"]')?.click();
     else if (e.key === 'Enter') $('.pad-btn[data-k="ok"]')?.click();
   }
@@ -242,7 +250,7 @@ const Battle = (() => {
     clearTimeout(B.timer); clearTimeout(B.coyote);
     $('#spell-timer-fill').style.transition = 'none';
     const ms = performance.now() - B.qStart;
-    const correct = String(val).trim() === String(B.q.answer);
+    const correct = answersMatch(B.q, val);
     B.answered++;
     if (B.mode !== 'demon') Adaptive.record(B.q, correct, ms, B.session);
     else recordDemon(B.q, correct);
@@ -290,6 +298,8 @@ const Battle = (() => {
     const hr = heroW.getBoundingClientRect(), er = enemyW.getBoundingClientRect(), sr = stage.getBoundingClientRect();
     setTimeout(() => {
       const crit = g.grade === 'S';
+      FX.slashArc(stage, hr.left - sr.left + hr.width / 2, hr.top - sr.top + hr.height / 3,
+        er.left - sr.left + er.width / 2, er.top - sr.top + er.height / 2, crit ? '#ffe9a0' : '#bfe0ff');
       Particles.slashTrail(hr.left - sr.left + hr.width / 2, hr.top - sr.top + hr.height / 3,
         er.left - sr.left + er.width / 2, er.top - sr.top + er.height / 2, B.zone.theme.accent);
       setTimeout(() => {
@@ -345,6 +355,11 @@ const Battle = (() => {
     const enemyW = $('#enemy-wrap');
     enemyW.classList.remove('enemy-attack'); void enemyW.offsetWidth; enemyW.classList.add('enemy-attack');
     Audio2.SFX.wrong();
+    {
+      const er2 = enemyW.getBoundingClientRect(), hr2 = heroW.getBoundingClientRect(), sr2 = stage.getBoundingClientRect();
+      setTimeout(() => FX.slashArc(stage, er2.left - sr2.left + er2.width / 2, er2.top - sr2.top + er2.height / 2,
+        hr2.left - sr2.left + hr2.width / 2, hr2.top - sr2.top + hr2.height / 2, '#f08a8a', 220), 150);
+    }
     setTimeout(() => {
       B.shield--;
       renderShield();

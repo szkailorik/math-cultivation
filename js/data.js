@@ -38,27 +38,27 @@ const ZONES = [
   {
     id: 'shamo', name: '石纹漠', module: '大九九', desc: '11~19 大数乘诀',
     theme: { sky1: '#2b1d0d', sky2: '#54381a', mid: '#8a5a2a', fog: '#e8c56a', accent: '#f0c060', particle: 'sand' },
-    icon: '🏜️', unlockLevel: 2,
+    icon: '🏜️', unlockLevel: 0,
   },
   {
     id: 'yunjian', name: '流云涧', module: '速算诀', desc: '凑整 · 平方 · 加减速算',
     theme: { sky1: '#0d1e2b', sky2: '#1a3a54', mid: '#2a5a8a', fog: '#a0d0f0', accent: '#70b8f0', particle: 'cloud' },
-    icon: '☁️', unlockLevel: 4,
+    icon: '☁️', unlockLevel: 0,
   },
   {
     id: 'qianji', name: '千机阁', module: '度量术', desc: '长度 · 质量 · 时间 · 面积',
     theme: { sky1: '#2b120d', sky2: '#54261a', mid: '#8a3f2a', fog: '#f0a08a', accent: '#f08a5e', particle: 'gear' },
-    icon: '⚙️', unlockLevel: 6,
+    icon: '⚙️', unlockLevel: 0,
   },
   {
     id: 'bibo', name: '碧波潭', module: '小数诀', desc: '小数乘除 · 互换 · 比较',
     theme: { sky1: '#0d2b28', sky2: '#1a5450', mid: '#2a8a80', fog: '#8ae8dc', accent: '#5ee0d0', particle: 'bubble' },
-    icon: '🌊', unlockLevel: 8,
+    icon: '🌊', unlockLevel: 0,
   },
   {
     id: 'xinghai', name: '星辰海', module: '分数章', desc: '约分 · 通分 · 分数运算',
     theme: { sky1: '#150d2b', sky2: '#2a1a54', mid: '#45308a', fog: '#b8a0f0', accent: '#9a7ef0', particle: 'star' },
-    icon: '✨', unlockLevel: 10,
+    icon: '✨', unlockLevel: 0,
   },
 ];
 

@@ -101,6 +101,8 @@ const Q = (() => {
     area: { chain: [['平方厘米', 1], ['平方分米', 100], ['平方米', 10000]], tip: '面积单位每级 ×100' },
   };
   function genDuliang(tier) {
+    // 30%：单位辨析（判断题，选择）——诊断误概念
+    if (Math.random() < 0.3) return genDuliangCompare(tier);
     const cat = tier === 0 ? pick(['length', 'mass', 'time']) : pick(['length', 'mass', 'time', 'area']);
     const u = UNITS[cat];
     let i = ri(0, u.chain.length - 2);
@@ -111,17 +113,36 @@ const Q = (() => {
     let text, ans;
     if (big2small) {
       const n = tier === 0 ? ri(1, 9) : pick([ri(1, 9), ri(2, 6) / 2]);
-      const v = Number.isInteger(n) ? n : n;
-      ans = v * ratio;
+      ans = n * ratio;
       if (!Number.isInteger(ans)) return genDuliang(tier);
-      text = `${v} ${u.chain[j][0]} = ? ${u.chain[i][0]}`;
+      text = `${n} ${u.chain[j][0]} = ? ${u.chain[i][0]}`;
     } else {
       const mult = tier === 0 ? ri(1, 9) : ri(2, 30);
       ans = mult;
       text = `${mult * ratio} ${u.chain[i][0]} = ? ${u.chain[j][0]}`;
     }
-    const distract = [ans * 10, ans / 10, ans * 100, ans + ratio].filter(v => Number.isInteger(v) && v > 0);
-    return { factId: `u_${cat}${i}${j}${big2small ? 'b' : 's'}`, text, answer: ans, input: 'choice', choices: makeChoices(ans, distract), tip: u.tip };
+    // 数值提取 → 键盘输入（答案过长则退回选择）
+    if (String(ans).length > 5) {
+      const distract = [ans * 10, ans / 10, ans * 100, ans + ratio].filter(v => Number.isInteger(v) && v > 0);
+      return { factId: `u_${cat}${i}${j}${big2small ? 'b' : 's'}`, text, answer: ans, input: 'choice', choices: makeChoices(ans, distract), tip: u.tip };
+    }
+    return { factId: `u_${cat}${i}${j}${big2small ? 'b' : 's'}`, text, answer: ans, input: 'pad', tip: u.tip };
+  }
+  // 单位辨析：跨单位比大小（诊断"数字大就大"误概念）
+  function genDuliangCompare(tier) {
+    const cat = pick(['length', 'mass', 'time']);
+    const u = UNITS[cat];
+    const i = ri(0, u.chain.length - 2), j = i + 1;
+    const ratio = u.chain[j][1] / u.chain[i][1];
+    const big = ri(1, 5);
+    const mode = pick(['eq', 'gt', 'lt']);
+    let small;
+    if (mode === 'eq') small = big * ratio;
+    else if (mode === 'gt') small = big * ratio - ri(1, Math.max(1, Math.floor(ratio / 2)));
+    else small = big * ratio + ri(1, Math.floor(ratio / 2));
+    const ans = mode === 'eq' ? '=' : mode === 'gt' ? '>' : '<';
+    return { factId: `ucmp_${cat}${i}`, text: `${big} ${u.chain[j][0]} ○ ${small} ${u.chain[i][0]}`, answer: ans,
+      input: 'choice', choices: ['>', '<', '='], tip: `先换成同一单位再比：${big} ${u.chain[j][0]} = ${big * ratio} ${u.chain[i][0]}` };
   }
 
   // ---------- 小数诀 ----------
@@ -136,14 +157,15 @@ const Q = (() => {
       const ans = mul ? base * pow : base / pow;
       const dir = mul ? '右' : '左';
       const digits = String(pow).length - 1;
-      return { factId: `xs_${mul?'mul':'div'}${pow}`, text: `${fmt(base)} ${mul ? '×' : '÷'} ${pow} = ?`, answer: fmt(ans), input: 'choice',
-        choices: makeChoices(fmt(ans), [fmt(mul ? base / pow : base * pow), fmt(base * 10), fmt(base / 10), fmt(ans * 10)]),
+      if (fmt(ans).length > 7) return genXiaoshu(tier);
+      return { factId: `xs_${mul?'mul':'div'}${pow}`, text: `${fmt(base)} ${mul ? '×' : '÷'} ${pow} = ?`, answer: fmt(ans),
+        input: 'pad', allowDot: true,
         tip: `${mul ? '乘' : '除以'} ${pow}：小数点向${dir}移 ${digits} 位` };
     }
     if (mode === 'f2d') {
       const [f, d] = pick(FRAC_DEC);
-      return { factId: `fd_${f.replace('/', '_')}`, text: `${f} = ?（小数）`, answer: fmt(d), input: 'choice',
-        choices: makeChoices(fmt(d), FRAC_DEC.map(x => fmt(x[1]))), tip: `${f} = ${fmt(d)}，这组要背熟` };
+      return { factId: `fd_${f.replace('/', '_')}`, text: `${f} = ?（小数）`, answer: fmt(d),
+        input: 'pad', allowDot: true, tip: `${f} = ${fmt(d)}，这组要背熟` };
     }
     if (mode === 'd2f') {
       const [f, d] = pick(FRAC_DEC);
@@ -218,5 +240,10 @@ const Q = (() => {
     return q;
   }
 
-  return { gen, baseTime };
+  // 键盘题输入耗时补偿（Reflex 做法：限时中扣除打字时间）
+  function typingComp(q) {
+    return q.input === 'pad' ? String(q.answer).length * 300 : 0;
+  }
+
+  return { gen, baseTime, typingComp };
 })();

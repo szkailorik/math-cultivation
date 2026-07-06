@@ -1,5 +1,5 @@
 /* 灵数仙途 Service Worker：缓存优先 + 后台更新 */
-const CACHE = 'lingshu-v2';
+const CACHE = 'lingshu-v3';
 const ASSETS = [
   './', './index.html', './manifest.json',
   './css/style.css',

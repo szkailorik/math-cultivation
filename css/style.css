@@ -118,6 +118,14 @@ button { font-family: inherit; border: none; background: none; color: inherit; c
 @keyframes h-sleeve { 0%,100% { transform: rotate(0); } 50% { transform: rotate(1.2deg); } }
 .hero-fig .h-aura { animation: h-aura-pulse 2.4s ease-in-out infinite; }
 @keyframes h-aura-pulse { 0%,100% { opacity: 0.7; } 50% { opacity: 1; } }
+.hero-fig .h-ribbon-l { transform-origin: 88px 162px; animation: h-ribbon 5.2s ease-in-out infinite; }
+.hero-fig .h-ribbon-r { transform-origin: 132px 162px; animation: h-ribbon 5.2s ease-in-out infinite reverse; }
+@keyframes h-ribbon { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(5deg); } }
+.hero-fig .h-sidelock { transform-origin: 74px 76px; animation: h-sidelock 4.6s ease-in-out infinite; }
+.hero-fig .h-sidelock.s2 { transform-origin: 146px 76px; animation-direction: reverse; }
+@keyframes h-sidelock { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(2deg); } }
+.hero-fig .h-wisp { animation: h-wisp 3.4s ease-in-out infinite; }
+@keyframes h-wisp { 0%,100% { transform: translateX(0); opacity: 0.55; } 50% { transform: translateX(4px); opacity: 0.8; } }
 
 /* ---------- 妖兽 SVG 动画 ---------- */
 .monster-fig { width: 100%; height: auto; display: block; }
@@ -428,6 +436,8 @@ button { font-family: inherit; border: none; background: none; color: inherit; c
 .pad-btn:active { transform: scale(0.93); background: rgba(140, 168, 255, 0.2); }
 .pad-del { color: #f0a08a; }
 .pad-ok { background: linear-gradient(160deg, #6a8ff0, #4a66d0); font-size: 18px; box-shadow: 0 3px 12px rgba(90, 120, 240, 0.4); }
+.pad-wide { grid-column: 1 / -1; padding: 10px 0; }
+.pad-dot { color: #ffd75e; font-size: 30px; line-height: 0.5; }
 
 /* ---------- 伤害飘字 / 闪光 / hitstop ---------- */
 .dmg-pop {
@@ -728,4 +738,14 @@ body.slowmo .battle-stage * { animation-duration: 300%; }
 .coop-bonus {
   font-size: 10px; color: #ffd75e; background: rgba(255, 215, 94, 0.12);
   border-radius: 8px; padding: 1px 6px; margin-left: 5px; vertical-align: 2px;
+}
+
+/* ---------- 剑气斩击 ---------- */
+.slash-arc {
+  position: absolute; z-index: 7; width: 130px; height: 130px; pointer-events: none;
+  margin-left: -65px; margin-top: -65px;
+}
+.slash-arc svg { width: 100%; height: 100%; overflow: visible; }
+.slash-arc .arc-path {
+  filter: drop-shadow(0 0 8px currentColor) drop-shadow(0 0 16px currentColor);
 }

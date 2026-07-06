@@ -73,7 +73,7 @@ const Adaptive = (() => {
     }
     // 时限：气势影响 ±25%，舒适题 +2s
     const mFac = 1 + (50 - session.momentum) / 200; // 气势低→时间多
-    best.timeMs = Math.round(best.baseTime * 1000 * mFac) + (session.comfortGiven ? 2000 : 0);
+    best.timeMs = Math.round(best.baseTime * 1000 * mFac) + Q.typingComp(best) + (session.comfortGiven ? 2000 : 0);
     return best;
   }
 
@@ -98,7 +98,7 @@ const Adaptive = (() => {
     } else {
       f.wrong++; f.streak = 0; f.box = Math.max(0, f.box - 1);
       f.needRedeem = 2; // 两次独立答对才洗白
-      s.wrongList[q.factId] = { zone: q.zone, sample: q.text, answer: q.answer, tip: q.tip, choices: q.choices || null, count: (s.wrongList[q.factId]?.count || 0) + 1, last: Date.now() };
+      s.wrongList[q.factId] = { zone: q.zone, sample: q.text, answer: q.answer, tip: q.tip, choices: q.choices || null, allowDot: q.allowDot || false, count: (s.wrongList[q.factId]?.count || 0) + 1, last: Date.now() };
       session.wrongStreak++;
       session.momentum = Math.max(0, session.momentum - 12);
       if (session.wrongStreak >= 2) { session.comfortNext = true; session.wrongStreak = 0; }
@@ -370,11 +370,41 @@ const FX = (() => {
     document.body.classList.add('slowmo');
     setTimeout(() => document.body.classList.remove('slowmo'), ms);
   }
-  return { hitstop, shake, damagePop, flash, slowmo };
+  // 剑气月牙：从 (x1,y1) 飞向 (x2,y2)
+  function slashArc(container, x1, y1, x2, y2, color = '#9fd0f5', dur = 180) {
+    if (reduced()) return;
+    const el = document.createElement('div');
+    el.className = 'slash-arc';
+    el.style.left = x1 + 'px';
+    el.style.top = y1 + 'px';
+    el.style.color = color;
+    const ang = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+    el.innerHTML = `<svg viewBox="0 0 100 100">
+      <path class="arc-path" d="M30 8 Q88 50 30 92 Q60 50 30 8 Z" fill="${color}" opacity="0.95"
+        transform="rotate(${ang} 50 50)"/></svg>`;
+    container.appendChild(el);
+    el.style.transition = `transform ${dur}ms cubic-bezier(0.3, 0, 0.7, 1), opacity 120ms ease ${dur - 40}ms`;
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      el.style.transform = `translate(${x2 - x1}px, ${y2 - y1}px) scale(1.25)`;
+      el.style.opacity = '0';
+    }));
+    setTimeout(() => el.remove(), dur + 220);
+  }
+  return { hitstop, shake, damagePop, flash, slowmo, slashArc };
 })();
 
 // ---------- 工具 ----------
 const $ = sel => document.querySelector(sel);
+// 键盘题答案归一化比对（0.5 == .5 == 0.50）
+function answersMatch(q, val) {
+  const a = String(q.answer).trim(), v = String(val).trim();
+  if (a === v) return true;
+  if (q.input === 'pad') {
+    const na = parseFloat(a), nv = parseFloat(v);
+    return Number.isFinite(na) && Number.isFinite(nv) && na === nv;
+  }
+  return false;
+}
 const $$ = sel => [...document.querySelectorAll(sel)];
 function showToast(msg, ms = 1800) {
   const t = $('#toast');
